@@ -7,40 +7,80 @@
 
 class Polynomial {
     public:
-        int coeffs; // Amount of coefficiants
-        std::string getEquation(void);
-        void setEquation(std::string entered_equation);
-        Polynomial();
+        int degree; // The degree of the polynomial. A quadratic will have a degree of two, a cubic will have a degree of 3 etc.
+        Polynomial(int deg);
+
+        std::string getEquation(void) {
+            return equation;
+        }
+
+        void setEquation() {
+            // Uses the variables set in order to set the equation for the polynomial
+            equation = "";
+            for (int i = (degree + 1); i > 0; i--) {
+                double var = variables[(degree + 1) - i];
+                int power = i - 1;
+                switch (power) {
+                    case(0):
+                        // If the power is zero, we don't need an x value
+                        equation += std::to_string(var);
+                        break;
+                    case(1):
+                        // If the power is 1, we don't need the power, just keep the x
+                        equation += std::to_string(var);
+                        equation += "x";
+                        equation += " + ";
+                        break;
+                    default:
+                        equation += std::to_string(var);
+                        equation += "x^";
+                        equation += std::to_string(power);
+                        equation += " + ";
+
+
+                };
+            };
+        }
+
+        void setVariables() {
+            // Takes in 'n' amount of variables from the user.
+            for (int i = 0; i < (degree + 1); i++) {
+                std::cout << "Please enter variable " << char(i+97) << std::endl << ">> ";
+                std::cin >> variables[i];
+            }
+        }
+
+        void solveEquation() {};
+
 
     protected:
-         double** solutions; // Number of solutions. Length of polynomial is unknown, so just set to a high amount.
-         std::string equation; // Printable equation
-
-    
+        float* solutions; 
+        float* variables;
+        std::string equation; // Printable equation
 };
 
-Polynomial::Polynomial(void) {
-    coeffs = 2;
+Polynomial::Polynomial(int deg) {
+    degree = deg;
+    variables = new float[degree + 1]; // Variables = degree + 1. For example, a quadratic has 2 degrees, but 3 variables [a,b,c]
+    solutions = new float[degree]; // Max no of solutions = degree of the polynomial
     equation = "No equation currently set";
 
 }
-std::string Polynomial::getEquation(void) {
-    return equation;
+
+class Quadratic : public Polynomial {
+    public:
+        Quadratic() : Polynomial(2) {};
 };
 
-void Polynomial::setEquation(std::string entered_equation) {
-
-    equation = entered_equation;
-
-};
 
 
 int main()
 {
-    Polynomial quadratic;
+    Quadratic quadratic;
+    quadratic.setVariables();
+    quadratic.setEquation();
     std::cout << quadratic.getEquation() << std::endl;
-    quadratic.setEquation("9x^2 + 6x + 3");
-    std::cout << quadratic.getEquation() << std::endl;
+
 
 }
 
