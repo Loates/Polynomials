@@ -2,10 +2,46 @@
 //
 
 #include <iostream>
+#include <string>
+
+
+class Polynomial {
+    public:
+        int coeffs; // Amount of coefficiants
+        std::string getEquation(void);
+        void setEquation(std::string entered_equation);
+        Polynomial();
+
+    protected:
+         double** solutions; // Number of solutions. Length of polynomial is unknown, so just set to a high amount.
+         std::string equation; // Printable equation
+
+    
+};
+
+Polynomial::Polynomial(void) {
+    coeffs = 2;
+    equation = "No equation currently set";
+
+}
+std::string Polynomial::getEquation(void) {
+    return equation;
+};
+
+void Polynomial::setEquation(std::string entered_equation) {
+
+    equation = entered_equation;
+
+};
+
 
 int main()
 {
-    std::cout << "Hello World!\n";
+    Polynomial quadratic;
+    std::cout << quadratic.getEquation() << std::endl;
+    quadratic.setEquation("9x^2 + 6x + 3");
+    std::cout << quadratic.getEquation() << std::endl;
+
 }
 
 // Run program: Ctrl + F5 or Debug > Start Without Debugging menu
