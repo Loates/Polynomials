@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <string>
+#include <math.h> 
 
 
 class Polynomial {
@@ -52,10 +53,13 @@ class Polynomial {
 
         void solveEquation() {};
 
+        float* getSolutions() {
+            return solutions;
+        };
 
     protected:
-        float* solutions; 
-        float* variables;
+        float *solutions; 
+        float *variables;
         std::string equation; // Printable equation
 };
 
@@ -70,6 +74,27 @@ Polynomial::Polynomial(int deg) {
 class Quadratic : public Polynomial {
     public:
         Quadratic() : Polynomial(2) {};
+
+        void solveEquation() {
+            float a = variables[0];
+            float b = variables[1];
+            float c = variables[2];
+            float discriminator = b*b - (4 * a * c);
+            if (discriminator < 0) {
+                return;
+            }
+            else if (discriminator == 0) {
+                // b^2 - 4ac is 0, so it can be ignored, simplifying the quadratic to -b / 2a, which only has one solution
+                solutions[0] = -b / (2 * a);
+            }
+            else {
+                // b^2 - 4ac / 2a is the quadratic equation.
+                solutions[0] = (( -b + sqrt(discriminator) )/ (2 * a));
+                solutions[1] = (( -b - sqrt(discriminator) ) / (2 * a));
+            }
+            
+
+        };
 };
 
 
@@ -80,6 +105,11 @@ int main()
     quadratic.setVariables();
     quadratic.setEquation();
     std::cout << quadratic.getEquation() << std::endl;
+    quadratic.solveEquation();
+    float* solutions = quadratic.getSolutions();
+    std::cout << "Memory address of solutions: " << solutions << std::endl;
+    std::cout << "Solutions: " << solutions[0] << " and " << solutions[1] <<  std::endl;
+
 
 
 }
